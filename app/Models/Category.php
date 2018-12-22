@@ -15,4 +15,14 @@ class Category extends Model
     public function posts(){
 		return $this->hasMany(Post::class); //category punya banyak post
 	}
+
+	public function scopeAbout($query)
+    {
+        return $query->where('name', '!=', 'about_me');
+    }
+
+    public function scopeAboutme($query)
+    {
+        return $query->where('name', 'about_me');
+    }
 }

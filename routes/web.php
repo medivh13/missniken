@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,21 +15,35 @@ use App\Models\Post;
 // Route::resource('/', 'FrontEnd\BlogController@index');
 // Route::get('/post/{slug}', 'FrontEnd\BlogController@post');
 Route::get('/', function (Request $request) {
-	// $post= Post::when($request->search, function($query) use($request) {
-	// 	$search = $request->search;
+	$post= Post::when($request->search, function($query) use($request) {
+		$search = $request->search;
 
-	// 	return $query->where('title', 'like', "%$search%")
-	// 	->orWhere('body', 'like', "%$search%")
-	// 	->orWhere('slug', 'like', "%$search%");
-	// })->with('category')
-	// ->published()
- //                    // ->withCount('comments')
-	// ->simplePaginate(5); 
+		return $query->where('title', 'like', "%$search%")
+		->orWhere('body', 'like', "%$search%")
+		->orWhere('slug', 'like', "%$search%");
+	})->with('category')
+	->published()
+                    // ->withCount('comments')
+	->simplePaginate(5); 
 
-
- //        // dd($post);
+        // dd($post);
 	// return view('frontend.index', compact('post')); 
-	return view('frontend.index2');
+	return view('frontend.index2', compact('post'));
+});
+
+Route::get('/category/{category}', function (Request $request){
+	// dd($request->category);
+	// $post = Post::whereHas('category', function ($query) use($request){
+	// 	return $query->where('name','like',"%$request%");
+	// });
+	// $post = Post::join('categories')->where('category','id')
+	$category = Category::where('name',$request->category)->first();
+	$post = Post::where('category_id', $category->id)
+	->with('category')
+	->published()
+                    // ->withCount('comments')
+	->simplePaginate(5); 
+	return view('frontend.index2', compact('post'));
 });
 
 Route::get('/post/{slug}', function(Request $request){
@@ -38,6 +53,14 @@ Route::get('/post/{slug}', function(Request $request){
 	->first();
         // dd($post->file_name);
 	return view('frontend.post', compact('post'));
+});
+
+Route::get('/aboutme', function(Request $request){
+	$post = App\Models\Post::whereHas('category', function($query){
+			$query->where('name','about_me');
+			})->first();
+
+	return view('frontend.aboutme', compact('post'));
 });
 
 

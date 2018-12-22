@@ -17,7 +17,7 @@
 				<p>{{$post->excerpt}}</p>
 			</div>
 			<div class="meta">
-				<time class="published">{{$post->created_at->diffForHumans()}}</time>
+				<time class="published">{{$post->updated_at->diffForHumans()}}</time>
 				{{-- <a href="#" class="author"><span class="name">Niken Purwani</span><img src="{{asset('future-imperfect/images/avatar.jpg')}}" alt="" /></a> --}}
 			</div>
 		</header>
@@ -27,9 +27,9 @@
 			{{-- <ul class="actions">
 				<li><a href='{{ url("/post/{$post->slug}") }}' class="button big">Continue Reading</a></li>
 			</ul> --}}
-			<ul class="stats">
+			{{-- <ul class="stats">
 				<li><a href="#">{{$post->category->name}}</a></li>
-			</ul>
+			</ul> --}}
 		</footer>
 	</article>
 @else

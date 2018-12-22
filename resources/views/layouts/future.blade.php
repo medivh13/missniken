@@ -2,11 +2,16 @@
 
 <html>
 	<head>
-		<title>Future Imperfect by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    	<meta name="description" content="@yield('meta_description')">
+    	<meta name="keywords" content="@yield('meta_keywords')">
+    	<title>Inspiring Class Room - @yield('title')</title>
 		
 		<link rel="stylesheet" href="{{asset('future-imperfect/assets/css/main.css')}}" />
+		@yield('css')
 	</head>
 	<body>
 
@@ -15,15 +20,15 @@
 
 				<!-- Header -->
 					<header id="header">
-						<h1><a href="#">Inspiring Stories</a></h1>
+						<h1><a href="{{URL('/')}}">Inspiring Class Room</a></h1>
 						<nav class="links">
 							<!--category-->
+							<?php $category = App\Models\Category::about()->get(); ?>
 							<ul>
-								<li><a href="#">Category 1</a></li>
-								<li><a href="#">Category 2</a></li>
-								<li><a href="#">Category 3</a></li>
-								<li><a href="#">Category 4</a></li>
-								<li><a href="#">Category 5</a></li>
+								@foreach($category as $key=>$val)
+									<li><a href="{{URL('/category/'.$val->name)}}">{{$val->name}}</a></li>
+								@endforeach
+								
 							</ul>
 						</nav>
 						<nav class="main">
@@ -34,9 +39,9 @@
 										<input type="text" name="query" placeholder="Search" />
 									</form>
 								</li>
-								<li class="menu">
+								{{-- <li class="menu">
 									<a class="fa-bars" href="#menu">Menu</a>
-								</li>
+								</li> --}}
 							</ul>
 						</nav>
 					</header>
@@ -60,9 +65,9 @@
 
 				<!-- Main -->
 					<div id="main">
-
+						@yield('article')
 						<!-- Post -->
-							<article class="post">
+							{{-- <article class="post">
 								<header>
 									<div class="title">
 										<h2><a href="#">Magna sed adipiscing (Title)</a></h2>
@@ -86,12 +91,10 @@
 							</article>
 
 						
-
-						<!-- Pagination -->
 							<ul class="actions pagination">
 								<li><a href="" class="disabled button big previous">Previous Page</a></li>
 								<li><a href="#" class="button big next">Next Page</a></li>
-							</ul>
+							</ul> --}}
 
 					</div>
 
@@ -100,62 +103,94 @@
 
 						<!-- Intro -->
 							<section id="intro">
-								<a href="#" class="logo"><img src="{{asset('future-imperfect/images/logo.jpg')}}" alt="" /></a>
-								<header>
-									
-									<p>Logonya taruh disini</p>
-								</header>
+								<article class="mini-post">
+									<a href="{{URL('/')}}" class="image"><img src="{{asset('future-imperfect/images/logo.jpg')}}" alt="" /></a>
+								{{-- <img src="{{asset('future-imperfect/images/logo.jpg')}}" /> --}}
+										
+								</article>
 							</section>
 						<!-- late post -->
 						<!-- Mini Posts -->
+
 							<section>
+								<h3>Late Post</h3>
 								<div class="mini-posts">
 									
 									<!-- Mini Post -->
-										<article class="mini-post">
-											<header>
-												<h3><a href="#">Vitae sed condimentum</a></h3>
-												<time class="published" datetime="2015-10-20">2 hours ago</time>
-												<a href="#" class="author"><img src="images/avatar.jpg" alt="" /></a>
-											</header>
-											<a href="#" class="image"><img src="{{asset('future-imperfect/images/class.jpg')}}" alt="" /></a>
-										</article>
+										<?php $post = App\Models\Post::latest()->published()->take(3)->get(); ?>
+										@forelse ($post as $key=>$val)
+											<article class="mini-post">
+												<header>
+													<h3><a href='{{ url("/post/{$val->slug}") }}'>{{$val->title}}</a></h3>
+													<time class="published">{{$val->created_at->diffForHumans()}}</time>
+													{{-- <a href="#" class="author"><img src="images/avatar.jpg" alt="" /></a> --}}
+												</header>
+												<a href="#" class="image"><img src="{{asset('/storage/'.$val->image)}}" alt="" /></a>
+											</article>
+										@empty
+											<article class="mini-post">
+												<header>
+													<h3><a href='{{ url("/") }}'>Article tidak ditemukan</a></h3>
+													{{-- <time class="published">{{$val->created_at->diffForHumans()}}</time> --}}
+													{{-- <a href="#" class="author"><img src="images/avatar.jpg" alt="" /></a> --}}
+												</header>
+												<a href="#" class="image"><img src="{{asset('future-imperfect/images/class.jpg')}}" alt="" /></a>
+											</article>
+										@endforelse
+										
 								</div>
 							</section>
 						
 						<!-- list all post -->
 						<!-- Posts List -->
 							<section>
+								<h3>List Post</h3>
 								<ul class="posts">
+									<?php $list_post = App\Models\Post::latest()->published()->take(10)->get(); ?>
+									@forelse ($list_post as $key=>$val)
 									<li>
 										<article>
 											<header>
-												<h3><a href="#">Lorem ipsum fermentum ut nisl vitae</a></h3>
+												<h3><a href='{{ url("/post/{$val->slug}") }}'>{{$val->title}}</a></h3>
+												<time class="published">{{$val->created_at->diffForHumans()}}</time>
+											</header>
+											<a href="#" class="image"><img src="{{asset('/storage/'.$val->image)}}" /></a>
+										</article>
+									</li>
+									@empty
+									<li>
+										<article>
+											<header>
+												<h3><a href='{{ url("/") }}'>Article tidak ditemukan</h3>
 												<time class="published" datetime="2015-10-20">3 hours ago</time>
 											</header>
 											<a href="#" class="image"><img src="{{asset('future-imperfect/images/class.jpg')}}" alt="" /></a>
 										</article>
 									</li>
+									@endforelse
 								</ul>
 							</section>
 
 						<!-- About -->
 							<section class="blurb">
-								<h2>About me</h2>
-								<p>Niken Purwani, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.</p>
+								<?php $post = App\Models\Post::whereHas('category', function($query){
+									$query->where('name','about_me');
+								})->first(); ?>
+								<h2>{{$post->title}}</h2>
+								<p>{!!ucwords(str_limit($post->body,50))!!}</p>
 								<ul class="actions">
-									<li><a href="#" class="button">Learn More</a></li>
+									<li><a href="{{URL('/aboutme')}}" class="button">Learn More</a></li>
 								</ul>
 							</section>
 
 						<!-- Footer -->
 							<section id="footer">
 								<ul class="icons">
-									<li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="fa-facebook"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="fa-rss"><span class="label">RSS</span></a></li>
-									<li><a href="#" class="fa-envelope"><span class="label">Email</span></a></li>
+									{{-- <li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li> --}}
+									<li><a href="https://www.facebook.com/niken.purwani" class="fa-facebook"><span class="label">Facebook</span></a></li>
+									<li><a href="https://www.instagram.com/nikenpurwani/" class="fa-instagram"><span class="label">Instagram</span></a></li>
+									{{-- <li><a href="https://www.wattpad.com/user/purwaniken" class="fa fa-watt-pad"><span class="label">Wattpad</span></a></li> --}}
+									{{-- <li><a href="#" class="fa-envelope"><span class="label">Email</span></a></li> --}}
 								</ul>
 								<p class="copyright">&copy; 2018 <a href ="#">nikenpurwani.com </a>. Powered By : <a href="https://sharehubid.com">SHAREHUB ID</a></p>
 							</section>
