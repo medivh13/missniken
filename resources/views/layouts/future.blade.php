@@ -177,7 +177,7 @@
 									$query->where('name','about_me');
 								})->first(); ?>
 								<h2>{{$post->title}}</h2>
-								<p>{!!ucwords(str_limit($post->body,50))!!}</p>
+								<p>{!!ucwords(str_limit($post->body,150))!!}</p>
 								<ul class="actions">
 									<li><a href="{{URL('/aboutme')}}" class="button">Learn More</a></li>
 								</ul>
