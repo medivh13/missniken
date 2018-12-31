@@ -154,7 +154,7 @@
 												<h3><a href='{{ url("/post/{$val->slug}") }}'>{{$val->title}}</a></h3>
 												<time class="published">{{$val->created_at->diffForHumans()}}</time>
 											</header>
-											<a href="#" class="image"><img src="{{asset('/storage/'.$val->image)}}" /></a>
+											<a href='{{ url("/post/{$val->slug}") }}' class="image"><img src="{{asset('/storage/'.$val->image)}}" /></a>
 										</article>
 									</li>
 									@empty
@@ -192,7 +192,7 @@
 									{{-- <li><a href="https://www.wattpad.com/user/purwaniken" class="fa fa-watt-pad"><span class="label">Wattpad</span></a></li> --}}
 									{{-- <li><a href="#" class="fa-envelope"><span class="label">Email</span></a></li> --}}
 								</ul>
-								<p class="copyright">&copy; 2018 <a href ="#">nikenpurwani.com </a>. Powered By : <a href="https://sharehubid.com">SHAREHUB ID</a></p>
+								<p class="copyright">&copy; 2018 <a href ="#">nikenpurwani.com </a>. Powered By : <a href="https://sharehubid.com">SHAREHUBID.COM</a></p>
 							</section>
 
 					</section>
